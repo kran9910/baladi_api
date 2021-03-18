@@ -18,9 +18,10 @@ from django.urls import path
 from django.conf.urls import include, re_path
 from rest_framework.routers import DefaultRouter
 from api.views import *
+from rest_framework import routers
+from baladi.api import router
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path ('citizens/', CitizensView),
-    path('citizen/<int:citizen_id>/', CitizenView)
+    path('citizens/', include(router.urls)),
 ]

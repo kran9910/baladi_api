@@ -13,5 +13,7 @@ res = requests.post('http://127.0.0.1:8000/citizens/',json ={
 })
 print(res.text)
 
-citizens = requests.get('http://127.0.0.1:8000/citizens')
+citizens = requests.get('http://127.0.0.1:8000/citizens/')
+citizen = requests.get('http://127.0.0.1:8000/citizens/1')
 print(citizens.text)
+print(citizen.text)
