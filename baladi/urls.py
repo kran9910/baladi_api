@@ -16,12 +16,28 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include, re_path
+from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework.routers import DefaultRouter
 from api.views import *
 from rest_framework import routers
 from baladi.api import router
+from django.contrib.auth import login
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('citizens/', include(router.urls)),
+    path('api/app/', include(router.urls)),
+    #path('api/auth/', include('djoser.urls.authtoken')),
+    #path('api-token-auth/', obtain_auth_token),
+    #path('login/', login),
+    #path('api-auth/',include('rest_framework.urls')),
+    path('register',SignupView.as_view()),
+    path('csrf_cookie', GetCSRFToken.as_view()),
+    path('authenticated', CheckAuthView.as_view()),
+    path('login', LoginView.as_view()),
+    path('logout', LogoutView.as_view()),
+    path('delete', DeleteAccountView.as_view()),
+    path('citizen_profile',GetCitizenProfileView.as_view() ),
+    path('update_citizen_profile', UpdateCitizenProfileView.as_view()),
+
 ]
+
