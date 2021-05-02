@@ -13,34 +13,41 @@ from .serializers import CitizenSerializer
 
 
 class CitizenViewset(viewsets.ModelViewSet):
+    permission_classes = (permissions.AllowAny,)
     queryset = models.Citizen.objects.all()
     serializer_class = serializers.CitizenSerializer
 
 class AgentViewset(viewsets.ModelViewSet):
+    permission_classes = (permissions.AllowAny,)
     queryset = models.Agent.objects.all()
     serializer_class = serializers.AgentSerializer
 
 class ComplaintViewset(viewsets.ModelViewSet):
+    permission_classes = (permissions.AllowAny,)
     queryset = models.Complaint.objects.all()
     serializer_class = serializers.ComplaintSerializer
 
 class ComplaintTrackViewset(viewsets.ModelViewSet):
+    permission_classes = (permissions.AllowAny,)
     queryset = models.ComplaintTrack.objects.all()
     serializer_class = serializers.ComplaintTrackSerializer
 
 class RequestViewset(viewsets.ModelViewSet):
+    permission_classes = (permissions.AllowAny,)
     queryset = models.Request.objects.all()
     serializer_class = serializers.RequestSerializer
 
 class RequestTrackViewset(viewsets.ModelViewSet):
+    permission_classes = (permissions.AllowAny,)
     queryset = models.RequestTrack.objects.all()
     serializer_class = serializers.RequestTrackSerializer
 
 class PostViewset(viewsets.ModelViewSet):
+    permission_classes = (permissions.AllowAny,)
     queryset = models.Post.objects.all()
     serializer_class = serializers.PostSerializer
 
-@method_decorator(csrf_protect, name= 'dispatch')
+
 class SignupView(APIView):
     permission_classes = (permissions.AllowAny,)
     def post(self, request, format = None):
@@ -83,7 +90,7 @@ class GetCSRFToken(APIView):
     def get(self,request, format = None):
         return Response({'success' : 'CSRF Cookie set'})
 
-@method_decorator(csrf_protect, name= 'dispatch')
+
 class CheckAuthView(APIView):
     def get(self,request, format = None):
         try:
@@ -95,7 +102,7 @@ class CheckAuthView(APIView):
         except:
             return Response({'error':'Something went wrong when checking authentication status'})
 
-@method_decorator(csrf_protect, name= 'dispatch')
+
 class LoginView(APIView):
     permission_classes = (permissions.AllowAny,)
 
