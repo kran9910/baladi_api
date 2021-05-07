@@ -8,8 +8,8 @@ from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
 
 from . import models
 from . import serializers
-from .models import Citizen
-from .serializers import CitizenSerializer
+from .models import Citizen, Agent
+from .serializers import CitizenSerializer, AgentSerializer
 
 
 class CitizenViewset(viewsets.ModelViewSet):
@@ -41,7 +41,7 @@ class PostViewset(viewsets.ModelViewSet):
     serializer_class = serializers.PostSerializer
 
 @method_decorator(csrf_protect, name= 'dispatch')
-class SignupView(APIView):
+class CitizenSignupView(APIView):
     permission_classes = (permissions.AllowAny,)
     def post(self, request, format = None):
         data = self.request.data
@@ -160,6 +160,72 @@ class UpdateCitizenProfileView(APIView):
             citizen = Citizen.objects.get(user = user)
             citizen = CitizenSerializer(citizen)
             return Response({'profile':citizen.data, 'username':str(username)})
+        except:
+            return Response({'error':'Something went wrong while updating profile'})
+
+@method_decorator(csrf_protect, name= 'dispatch')
+class AgentSignupView(APIView):
+    permission_classes = (permissions.AllowAny,)
+    def post(self, request, format = None):
+        data = self.request.data
+        username = data['username']
+        password = data['password']
+        re_password = data['re_password']
+        employee_id = data['employee_id']
+        phone_number = data['phone_number']
+        first_name = data['first_name']
+        last_name = data['last_name']
+        email = data['email']
+        role = data['role']
+        if password == re_password:
+            try:
+                if User.objects.filter(username = username).exists():
+                    return Response({'error': 'Username already exists'})
+                else:
+                    if len(password) < 6:
+                        return Response({'error' : 'Password must be at least 6 characters'})
+                    else:
+                        user = User.objects.create_user(username=username, password=password)
+                        user.save()
+                        user = User.objects.get(username=username)
+                        print(user)
+                        agent = Agent(user=user, employee_id=employee_id, phone_number=phone_number, first_name= first_name,last_name=last_name,email=email,role=role)
+                        agent.save()
+                        return Response({'success' : 'Agent Created'})
+            except:
+                return Response({'error':'Something went wrong when registering account'})
+
+        else:
+            return Response({'error' : 'Passwords do not match'})
+
+class GetAgentProfileView(APIView):
+    def get(self,request, format=None):
+        try:
+            user = self.request.user
+            username = user.username
+            user = User.objects.get(id= user.id)
+            agent = Agent.objects.get(user = user)
+            agent = AgentSerializer(agent)
+            return Response({'profile': agent.data, 'username': str(username)})
+        except:
+            return Response({'error':'Something went wrong while getting profile'})
+
+class UpdateAgentProfileView(APIView):
+    def put(self,request,format = None):
+        try:
+            user = self.request.user
+            username = user.username
+            data = self.request.data
+            phone_number = data['phone_number']
+            first_name = data['first_name']
+            last_name = data['last_name']
+            email = data['email']
+            role = data['role']
+            user = User.objects.get(id=user.id)
+            Agent.objects.filter(user=user).update(phone_number=phone_number, first_name=first_name,last_name=last_name,role=role,email=email)
+            agent = Agent.objects.get(user = user)
+            agent = AgentSerializer(agent)
+            return Response({'profile':agent.data, 'username':str(username)})
         except:
             return Response({'error':'Something went wrong while updating profile'})
 
