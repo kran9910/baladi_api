@@ -78,6 +78,13 @@ class RequestTrack(models.Model):
     date_completed = models.DateTimeField(blank=True, null=True)
 
 
+class Proposal(models.Model):
+    citizen_id = models.ForeignKey(Citizen, to_field='citizen_id', on_delete=models.CASCADE)
+    title = models.CharField(max_length=255)
+    details = models.CharField(max_length=16000, blank=True)
+    date_arrived = models.DateTimeField(auto_now_add=True)
+
+
 class Post(models.Model):
     title = models.CharField(max_length=2047)
     picture = models.URLField(max_length=16000, blank=True)

@@ -33,6 +33,11 @@ class RequestTrackSerializer(serializers.ModelSerializer):
         model = RequestTrack
         fields = '__all__' #Return all the fields
 
+class ProposalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Proposal
+        fields = '__all__' #Return all the fields
+
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post

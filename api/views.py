@@ -36,6 +36,10 @@ class RequestTrackViewset(viewsets.ModelViewSet):
     queryset = models.RequestTrack.objects.all()
     serializer_class = serializers.RequestTrackSerializer
 
+class ProposalViewset(viewsets.ModelViewSet):
+    queryset = models.Proposal.objects.all()
+    serializer_class = serializers.ProposalSerializer
+
 class PostViewset(viewsets.ModelViewSet):
     queryset = models.Post.objects.all()
     serializer_class = serializers.PostSerializer
